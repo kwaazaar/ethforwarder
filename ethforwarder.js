@@ -38,7 +38,7 @@ Q.all([
             // - LastTxUnconfirmed && block.tx.contains(lastTx)
             // - - LastTxUnconfirmed = 0;
             // - Balance > 0
-            // - - Make Tx
+            // - - Make Tx https://github.com/kwaazaar/ethforwarder.git
 
             // web3.eth.defaultBlock
             web3.eth.getBlock('latest')
@@ -77,13 +77,13 @@ Q.all([
                                                 return web3.eth.accounts.signTransaction(tx, Config.sourcePrivKey)
                                                     .then((res) => {
                                                         return web3.eth.sendSignedTransaction(res.rawTransaction)
-                                                            .then((txHash) => {
-                                                                unconfirmedTx.push(txHash);
-                                                                console.log(`Successfully moved ${web3.utils.fromWei(valueToSend, "ether")} ETH (tx:${txHash})`);
+                                                            .then((txReceipt) => {
+                                                                unconfirmedTx.push(txReceipt.transactionHash);
+                                                                console.log(`Successfully moved ${web3.utils.fromWei(valueToSend, "ether")} ETH (tx:${txReceipt.transactionHash})`);
                                                             })
                                                             .catch((err) => {
-                                                                console.error(`Failed to send tx ${res.rawTransaction}:`);//, err);
-                                                                throw err;
+                                                                console.error(`Failed to send tx ${res.messageHash}:`);
+                                                                throw err; // err itself is logged in outer catch
                                                             });
                                                     });
                                             }

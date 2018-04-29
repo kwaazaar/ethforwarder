@@ -3,5 +3,5 @@
     "tokenListUrl": "https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scripts/tokens/ethTokens.json",
     "sourcePrivKey": "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
     "targetAddress": "0x437ad85f4492e094c862e75f316da29c07297ace",
-    "minBalance": "1000000000000000"
+    "minBalance": "100000000000000"
 }
