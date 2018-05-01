@@ -11,8 +11,7 @@ if (typeof web3 !== 'undefined') {
 }
 const BN = web3.utils.BN;
 
-var minBalance = web3.utils.toBN(Config.minBalance); // is in wei
-
+var minBalance = web3.utils.toBN(Config.minBalance);
 console.log(`Minimum balance: ${web3.utils.fromWei(Config.minBalance, "ether")} ETH`);
 
 var account = web3.eth.accounts.privateKeyToAccount(Config.sourcePrivKey);
@@ -34,12 +33,8 @@ Q.all([
         unconfirmedTx = [];
 
         function doLoop(restart) {
-            // New block?
-            // - LastBlock = blockNr
-            // - LastTxUnconfirmed && block.tx.contains(lastTx)
-            // - - LastTxUnconfirmed = 0;
-            // - Balance > 0
-            // - - Make Tx https://github.com/kwaazaar/ethforwarder.git
+            // find
+// todo: find pending tx on address and send custom tx with nonce + 1
 
             // web3.eth.defaultBlock
             web3.eth.getBlock('latest')
@@ -58,27 +53,14 @@ Q.all([
 
                                 var bnBalance = web3.utils.toBN(balance);
                                 if (bnBalance.gte(minBalance)) {
-                                    var maxGas = web3.utils.toBN(21000);
 
                                     return web3.eth.getGasPrice()
                                         .then((price) => {
-
                                             var gasPrice = web3.utils.toBN(price).mul(web3.utils.toBN(3)); // 3x normal gas to get preference
 
-                                            console.log(`FactorConfig: ${Config.factor}`);
-                                            if (Config.factor)
-                                            {
-                                                var hundred = web3.utils.toBN(100);
-                                                var factor = web3.utils.toBN(Config.factor * 100);
-                                                console.log(`Factor: ${factor}, ${factor.toNumber()}, ${Config.factor}`);
-                                                gasPrice = bnBalance.div(maxGas);
-                                                console.log(`gasPrice1: ${web3.utils.toWei(gasPrice)} wei (maxGas=${maxGas.toNumber()})`);
-                                                gasPrice = gasPrice.div(hundred).mul(factor); // Beetje zelf houden
-                                                console.log(`gasPrice2: ${web3.utils.toWei(gasPrice)} wei (factor=${factor.toNumber()})`);
-                                            }
-
-                                            // Calculate total value
+                                            var maxGas = web3.utils.toBN(21000);
                                             var totalGas = gasPrice.mul(maxGas);
+
                                             var valueToSend = bnBalance.sub(totalGas);
 
                                             if (valueToSend.gte(minBalance)) {

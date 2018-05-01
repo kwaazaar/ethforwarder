@@ -1,7 +1,8 @@
 {
-    "rpcAddr": "https://rinkeby.infura.io",
+    "rpcAddr": "https://ropsten.infura.io",
     "tokenListUrl": "https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scripts/tokens/ethTokens.json",
     "sourcePrivKey": "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
     "targetAddress": "0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef",
-    "minBalance": "100000000000000"
+    "minBalance": "100000000000000",
+    "factor": 0.92
 }
