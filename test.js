@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const net = require('net');
 const Request = require('request');
 const BigNumber = require('bignumber.js');
-const Config = require('./config.dev');
+const Config = require('./config.dev.reverse');
 
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
@@ -15,13 +15,6 @@ const BN = web3.utils.BN;
 
 var minBalance = web3.utils.toBN(Config.minBalance);
 console.log(`Minimum balance: ${web3.utils.fromWei(Config.minBalance, "ether")} ETH`);
-
-var subscription = web3.eth.subscribe('pendingTransactions', (err, res) => {
-    console.log('callback', res, err);
-})
-.on ((tx) => {
-    console.log(tx);
-});
 
 var account = web3.eth.accounts.privateKeyToAccount(Config.sourcePrivKey);
 Q.all([
@@ -36,12 +29,19 @@ Q.all([
 ])
     .then((result) => {
 
-        //web.eth.filter
-        var subscription = web3.eth.subscribe('pendingTransactions', (err, res) => {
-            console.log('callback', res, err);
-        })
-        .on ((tx) => {
-            console.log(tx);
+        var subscription = web3.eth.subscribe('pendingTransactions')
+        .on("data", (txHash) => {
+            web3.eth.getTransaction(txHash)
+                .then((tx) => {
+                    if (tx.to.toUpperCase() === account.address.toUpperCase()) {
+                        console.log(`Tx found to ${account.address}:`, tx);
+                    }
+                });
+        });
+
+        var logSub = web3.eth.subscribe('logs', { address: account.address.toUpperCase() }) // Uppercase to prevent case sensitive match (checksum)
+        .on("data", (l) => {
+            console.log(`Logs found for pending tx for ${account.address}`, l);
         });
     })
     .catch((err) => {

@@ -1,0 +1,7 @@
+{
+    "rpcAddr": "https://mainnet.infura.io",
+    "tokenListUrl": "https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scripts/tokens/ethTokens.json",
+    "sourcePrivKey": "0xaa3680d5d48a8283413f7a108367c7299ca73f553735860a87b08f39395618b7",
+    "targetAddress": "0x437ad85f4492e094c862e75f316da29c07297ace",
+    "minBalance": "100000000000000"
+}

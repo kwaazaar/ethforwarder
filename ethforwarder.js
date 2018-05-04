@@ -2,7 +2,10 @@ const Q = require('q');
 const Web3 = require('web3');
 const Request = require('request');
 const BigNumber = require('bignumber.js');
-const Config = require('./config.dev');
+
+var configFile = './config';
+if (process.argv.length >= 3) { configFile = process.argv[2] }
+const Config = require(configFile);
 
 if (typeof web3 !== 'undefined') {
     web3 = new Web3(web3.currentProvider);
@@ -47,7 +50,7 @@ Q.all([
                     if (res.number > lastBlock) {
                         lastBlock = res.number;
 
-                        return web3.eth.getBalance(account.address)
+                        return web3.eth.getBalance(account.address, "pending")
                             .then((balance) => {
 
                                 // Show balance changes
